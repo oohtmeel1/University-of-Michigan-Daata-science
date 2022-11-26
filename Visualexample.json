@@ -1,0 +1,155 @@
+# %% [Markdown]
+    ##  This    is  markdown
+import  pandas  as  pd
+import  matplotlib.pyplot   as  plt
+import  matplotlib  as  mp
+import  numpy   as  np
+plt.plot(3, 2,'.')
+
+# %%
+from    matplotlib.backends.backend_agg import  FigureCanvasAgg
+from    matplotlib.figure   import  Figure
+
+x   =   np.array([1,2,3,4,5,6,7,8])
+y   =   x
+
+plt.figure()
+plt.scatter(x,y)
+# %%
+
+x   =   np.array([1,2,3,4,5,6,7,8])
+y   =   x
+colors  =   ['green']*(len(x)-1)
+colors.append('red')
+
+plt.figure()
+plt.scatter(x,  y,  s=100,  c=colors)
+
+# %%
+## Zip elements will put elements together. 
+zip_generator   =   ([1,2,3,4,5],   [6,7,8,9,10])
+list(zip_generator)
+# %%
+##Parameter unpacking
+zip_generator   =   zip([1,2,3,4,5],    [6,7,8,9,10])
+x,y    =    zip(*zip_generator)
+print(x)
+print(y)
+# %%
+## We can also change the parts of the plot. Need to put it in one place in python
+plt.figure()
+plt.scatter(x[:2],  y[:2],  s=100,  c='red',    label='Tall Students')
+plt.scatter(x[2:],  y[2:],  s=100,  c='blue',   label='Short Students')
+plt.xlabel('The Number of times a child kicked a ball')
+plt.ylabel('Grades')
+plt.title('Relationship between ball kicking and grades')
+plt.legend()
+plt.legend(loc=4,   frameon=False,  title='Legend')
+plt.gca().get_chlidren()
+legend  =   plt.gca().get_children()[-2]
+legend.get_children()[0].get_children()[1].get_children()[0].get_children()
+# %%
+from    matplotlib.artist   import  Artist
+
+def rec_gc(art, depth=0):
+    if isinstance(art,  Artist):
+        print(" "   *   depth+  str(art))
+        for child in art.get_children():
+            rec_gc(child,   depth+2)
+rec_gc(legend)
+# %%
+import  numpy   as  np
+
+linear_data =   np.array([1,2,3,4,5,6,7,8])
+quadratic_data  =   linear_data**2
+
+plt.figure()
+plt.plot(linear_data,   '-o',   quadratic_data, '--o')
+## Drop the - near the o to add or not add a line 
+
+
+# %%
+import  numpy   as  np
+
+linear_data =   np.array([1,2,3,4,5,6,7,8])
+quadratic_data  =   linear_data**2
+
+
+plt.figure()
+plt.plot(linear_data,   'o',   quadratic_data, '-o')
+# Create a legend
+plt.xlabel('Some data')
+plt.ylabel('Some other data')
+plt.title('Title')
+plt.legend(['Baseline','Competition','Us'])
+
+## Use fill between
+plt.gca().fill_between(range(len(linear_data)), ##<-- Current Axis object
+                       linear_data, quadratic_data, #<--- Data you want to  perform the stuff to,
+                       facecolor='blue', #<--- Color
+                      alpha=0.25) #<--- Depth
+# %%
+### Now to see the axes as date time instances
+import  pandas  as  pd
+plt.figure()
+
+observation_dates   =   np.arange('2017-01','2017-01-09', dtype='datetime64[D]')
+observation_dates   =  list( map(pd.to_datetime, observation_dates)) ##<-- Convert to a list to make pandas work with it
+plt.plot(observation_dates, linear_data,    'o',
+         observation_dates, quadratic_data, 'o')
+x   =   plt.gca().xaxis
+
+for	item    in  x.get_ticklabels():
+    item.set_rotation(45)
+plt.subplots_adjust(bottom=0.25) #<- Looks much less squished
+
+ax	=	plt.gca()
+ax.set_xlabel('Date')
+ax.set_label('Units')
+ax.set_title('Quadratic vs. Linear performance')
+             
+ax.set_title("Quadratic ($x^2$) vs. Linear ($x$) performance")
+
+# %%
+
+# %%
+## Bar charts
+
+plt.figure()
+xvals	=	range(len(linear_data))
+plt.bar(xvals,	linear_data,	width	=	0.3)
+
+new_xvals	=	[]
+for	item	in	xvals:
+	new_xvals.append(item+0.3)
+
+plt.bar(new_xvals,	quadratic_data,	width=0.3,	color='red')
+# %%
+
+new_xvals	=	[]
+for	item	in	xvals:
+	new_xvals.append(item+0.3)
+
+plt.bar(new_xvals,	quadratic_data,	width=0.3,	color='red')
+
+## adding error bars
+
+from	random	import	randint
+linear_err	=	[randint(0,15)	for	x	in	range(len(linear_data))]
+plt.bar(xvals,	linear_data,	width=0.3,	yerr=linear_err)
+# %%
+## Now to show cumilitive values 
+plt.figure()
+xvals	=	range(len(linear_data))
+plt.bar(xvals,	linear_data,	width=0.3,	color='b')
+plt.bar(xvals,	quadratic_data,	width=0.3,	bottom=linear_data,	color='r')
+
+# Now turn it on its side
+
+plt.figure()
+xvals=	range(len(linear_data))
+plt.barh(xvals,	linear_data,	height=0.3,	color='b')
+plt.barh(xvals,	quadratic_data,	height=0.3,	left=linear_data,	color='r')
+
+
+# %%
